@@ -20,12 +20,16 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class BoardSerializer(serializers.ModelSerializer):
-   class Meta:
+    user = UserSerializer(read_only=True)
+    group = GroupSerializer(read_only=True)
+
+    class Meta:
         model = Board
         fields = ['id', 'user', 'group', 'title']
 
 
 class IdeaSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
     votes = serializers.SerializerMethodField()
 
     class Meta:
@@ -42,6 +46,8 @@ class IdeaSerializer(serializers.ModelSerializer):
 
 
 class VoteSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
     class Meta:
         model = Vote
-        fields = ['value']
+        fields = ['id', 'user', 'value']

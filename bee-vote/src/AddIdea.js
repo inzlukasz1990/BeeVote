@@ -13,13 +13,11 @@ const AddIdea = () => {
 
     setAuthHeader(localStorage.getItem('access_token'));
 
-	console.log(boardId);
-
     const handleAdd = (event) => {
         event.preventDefault();
 
         const data = {
-            user: localStorage.getItem('user_pk'),
+            user: JSON.parse(localStorage.getItem('user')).pk,
             board: boardId,
             content,
 			order: 0,

@@ -176,3 +176,9 @@ class BoardIdeaVotesViewSet(viewsets.ModelViewSet):
             return Response({'status': 'vote set'})
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['get'])
+    def all_votes(self, request, *args, **kwargs):
+        votes = Vote.objects.filter(idea=kwargs['idea_pk'])
+        serializer = self.get_serializer(votes, many=True)
+        return Response(serializer.data)

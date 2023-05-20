@@ -59,7 +59,7 @@ const BoardDetails = () => {
         // Add isOwner field to each idea
         const ideasWithOwnership = response.data.map(idea => ({
           ...idea, 
-          isOwner: parseInt(idea.user) === parseInt(localStorage.getItem('user_pk')),
+          isOwner: parseInt(idea.user) === parseInt(JSON.parse(localStorage.getItem('user')).pk),
         }));
         setIdeas(ideasWithOwnership);
       })
@@ -90,7 +90,7 @@ const BoardDetails = () => {
 			  .then(response => {
 				const ideasWithOwnership = response.data.map(idea => ({
 				  ...idea, 
-				  isOwner: parseInt(idea.user) === parseInt(localStorage.getItem('user_pk')),
+				  isOwner: parseInt(idea.user) === parseInt(JSON.parse(localStorage.getItem('user')).pk),
 				}));
 				setIdeas(ideasWithOwnership);
 			  })
@@ -129,6 +129,7 @@ const BoardDetails = () => {
                                     <thead>
                                         <tr>
                                             <th>Idea Content</th>
+                                            <th>Author</th>
                                             <th>Edit/Delete</th>
                                             <th>Vote Up/Down</th>
                                             <th>Votes Positive</th>
@@ -143,6 +144,7 @@ const BoardDetails = () => {
                                     <tbody>
                                         <tr>
                                             <td>{idea.content}</td>
+                                            <td><Link to={`/boards/${boardId}/ideas/${idea.id}/votes`}>{idea.user.username}</Link></td>
                                             <td>
                                                 <Link to={`/boards/${boardId}/ideas/${idea.id}/edit`}>
                                                     <Button variant="secondary" className="mr-2">Edit</Button>

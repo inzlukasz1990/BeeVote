@@ -9,6 +9,7 @@ import EditBoard from './EditBoard';
 import BoardDetails from './BoardDetails';
 import AddIdea from './AddIdea';
 import EditIdea from './EditIdea';
+import VotesList from "./VotesList";
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
 		    <Route path="/boards/:boardId" element={<BoardDetails />} />
 		    <Route path="/boards/:boardId/ideas/add" element={<AddIdea />} />
 		    <Route path="/boards/:boardId/ideas/:id/edit" element={<EditIdea />} />
+            <Route path="/boards/:boardId/ideas/:id/votes" element={<VotesList />} />
       </Routes>
     </Router>
   );

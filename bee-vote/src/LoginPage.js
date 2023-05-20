@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Container, Tab, Nav, Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { setTokens, setAuthHeader } from './auth';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import GroupManagement from './GroupManagement';
 import { API_URL } from './config';
 import { useNavigate  } from 'react-router-dom';
 
@@ -34,7 +32,7 @@ const LoginPage = () => {
 		
 		axios.get(API_URL + 'auth/user/')
 			.then(response => {
-                localStorage.setItem('user_pk', response.data.pk);
+                localStorage.setItem('user', JSON.stringify(response.data));
             })
 			.catch(error => {
                 setError('Error fetching user');

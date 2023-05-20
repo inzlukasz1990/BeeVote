@@ -22,7 +22,7 @@ const GroupManagement = () => {
     }, []);
 
     const joinGroup = (groupId) => {
-        axios.post(API_URL + `users/${localStorage.getItem('user_pk')}/join_group/`, { group: groupId })
+        axios.post(API_URL + `users/${JSON.parse(localStorage.getItem('user')).pk}/join_group/`, { group: groupId })
             .then(response => {
                 console.log(response.data);
             })
@@ -32,7 +32,7 @@ const GroupManagement = () => {
     };
 
     const leaveGroup = (groupId) => {
-        axios.post(API_URL + `users/${localStorage.getItem('user_pk')}/leave_group/`, { group: groupId })
+        axios.post(API_URL + `users/${JSON.parse(localStorage.getItem('user')).pk}/leave_group/`, { group: groupId })
             .then(response => {
                 console.log(response.data);
             })

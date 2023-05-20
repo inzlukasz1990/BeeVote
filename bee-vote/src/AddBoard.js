@@ -28,7 +28,7 @@ const AddBoard = () => {
         event.preventDefault();
 
         const data = {
-			user: localStorage.getItem('user_pk'),
+			user: JSON.parse(localStorage.getItem('user')).pk,
             title,
             group: selectedGroup,
         };
