@@ -31,7 +31,6 @@ const VotesList = () => {
           <tr>
             <th>#</th>
             <th>User</th>
-            <th>Idea</th>
             <th>Value</th>
           </tr>
         </thead>
@@ -40,7 +39,6 @@ const VotesList = () => {
             <tr key={vote.id}>
               <td>{vote.id}</td>
               <td>{vote.user.username}</td>
-              <td>{vote.idea}</td>
               <td>{vote.value ? 'Yes' : 'No'}</td>
             </tr>
           ))}

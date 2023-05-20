@@ -130,7 +130,6 @@ const BoardDetails = () => {
                                         <tr>
                                             <th>Idea Title</th>
                                             <th>Author</th>
-                                            <th>Edit/Delete</th>
                                             <th>Vote Up/Down</th>
                                             <th>Votes Positive</th>
                                             <th>Votes Negative</th>
@@ -139,18 +138,13 @@ const BoardDetails = () => {
                                             <th>Voting Start</th>
                                             <th>Voting End</th>
                                             <th>Voting Result</th>
+                                            <th>Edit/Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td><Link to={`/boards/${boardId}/ideas/${idea.id}/details`}>{idea.title}</Link></td>
                                             <td><Link to={`/boards/${boardId}/ideas/${idea.id}/votes`}>{idea.user.username}</Link></td>
-                                            <td>
-                                                <Link to={`/boards/${boardId}/ideas/${idea.id}/edit`}>
-                                                    <Button variant="secondary" className="mr-2">Edit</Button>
-                                                </Link>
-                                                <Button variant="danger" onClick={() => deleteIdea(idea.id)}>Delete</Button>
-                                            </td>
                                             <td>
                                                 <Button variant="success" onClick={() => voteOnIdea(idea.id, 1)}>Vote Up</Button>
                                                 <Button variant="danger" onClick={() => voteOnIdea(idea.id, 0)}>Vote Down</Button>
@@ -162,6 +156,12 @@ const BoardDetails = () => {
                                             <td>{idea.voting_start}</td>
                                             <td>{idea.voting_end}</td>
                                             <td>{idea.voting_result ? "Yes" : "No"}</td>
+                                            <td>
+                                                <Link to={`/boards/${boardId}/ideas/${idea.id}/edit`}>
+                                                    <Button variant="secondary" className="mr-2">Edit</Button>
+                                                </Link>
+                                                <Button variant="danger" onClick={() => deleteIdea(idea.id)}>Delete</Button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </Table>

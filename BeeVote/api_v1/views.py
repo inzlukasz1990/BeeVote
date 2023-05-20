@@ -98,7 +98,9 @@ class BoardViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        group_id = self.request.data.get('group')
+        group = Group.objects.get(id=group_id)
+        serializer.save(user=self.request.user, group=group)
 
 
 class BoardIdeasViewSet(viewsets.ModelViewSet):
