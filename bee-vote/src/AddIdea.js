@@ -4,11 +4,13 @@ import { setAuthHeader } from './auth';
 import { API_URL } from './config';
 import { Form, Button } from 'react-bootstrap';
 import { useParams, useNavigate  } from 'react-router-dom';
+import SimpleMDE from "react-simplemde-editor";  // Import the react-simplemde-editor library
+import "easymde/dist/easymde.min.css";  // Import the EasyMDE styles
 
 const AddIdea = () => {
 	const navigate = useNavigate ();
 	const { boardId } = useParams();
-    const [title, setTile] = useState('');
+    const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [error, setError] = useState(null);
 
@@ -22,7 +24,7 @@ const AddIdea = () => {
             board: boardId,
             title,
             content,
-			order: 0,
+            order: 0,
         };
 
         axios.post(API_URL + `boards/${boardId}/ideas/`, data)
@@ -32,8 +34,8 @@ const AddIdea = () => {
             .catch(error => {
                 setError('Error adding idea');
             });
-			
-		navigate(`/boards/${boardId}`);
+
+        navigate(`/boards/${boardId}`);
     };
 
     return (
@@ -41,12 +43,13 @@ const AddIdea = () => {
             <h2>Add Idea</h2>
             {error && <div>{error}</div>}
             <Form.Group controlId="title">
-                <Form.Label>Tile</Form.Label>
-                <Form.Control type="text" value={title} onChange={e => setTile(e.target.value)} />
+                <Form.Label>Title</Form.Label>
+                <Form.Control type="text" value={title} onChange={e => setTitle(e.target.value)} />
             </Form.Group>
             <Form.Group controlId="content">
                 <Form.Label>Content</Form.Label>
-                <Form.Control type="text" value={content} onChange={e => setContent(e.target.value)} />
+                {/* Add the SimpleMDE editor here */}
+                <SimpleMDE onChange={setContent} value={content} />
             </Form.Group>
             <Button variant="primary" type="submit">
                 Add Idea

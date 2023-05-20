@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate  } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { setAuthHeader } from './auth';
 import { API_URL } from './config';
 import { Form, Button } from 'react-bootstrap';
+import SimpleMDE from "react-simplemde-editor";  // Import the react-simplemde-editor library
+import "easymde/dist/easymde.min.css";  // Import the EasyMDE styles
 
 const EditIdea = () => {
 	const navigate = useNavigate ();
@@ -19,6 +21,7 @@ const EditIdea = () => {
         axios.get(API_URL + `boards/${boardId}/ideas/${id}/`)
             .then(response => {
                 setIdea(response.data);
+                setTitle(response.data.title);
                 setContent(response.data.content);
             })
             .catch(error => {
@@ -43,8 +46,8 @@ const EditIdea = () => {
             .catch(error => {
                 setError('Error editing idea');
             });
-			
-		navigate(`/boards/${boardId}`);
+
+        navigate(`/boards/${boardId}`);
     };
 
     return (
@@ -57,7 +60,8 @@ const EditIdea = () => {
             </Form.Group>
             <Form.Group controlId="content">
                 <Form.Label>Content</Form.Label>
-                <Form.Control type="text" value={content} onChange={e => setContent(e.target.value)} />
+                {/* Add the SimpleMDE editor here */}
+                <SimpleMDE onChange={setContent} value={content} />
             </Form.Group>
             <Button variant="primary" type="submit">
                 Save Changes

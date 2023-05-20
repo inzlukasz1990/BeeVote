@@ -143,7 +143,7 @@ const BoardDetails = () => {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>{idea.title}</td>
+                                            <td><Link to={`/boards/${boardId}/ideas/${idea.id}/details`}>{idea.title}</Link></td>
                                             <td><Link to={`/boards/${boardId}/ideas/${idea.id}/votes`}>{idea.user.username}</Link></td>
                                             <td>
                                                 <Link to={`/boards/${boardId}/ideas/${idea.id}/edit`}>
