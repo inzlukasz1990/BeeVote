@@ -34,7 +34,7 @@ class IdeaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Idea
-        fields = ['id', 'user', 'content', 'order', 'votes', 'voting_start', 'voting_end', 'voting_result']
+        fields = ['id', 'user', 'title', 'content', 'order', 'votes', 'voting_start', 'voting_end', 'voting_result']
 
     def get_votes(self, obj):
         return {

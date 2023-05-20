@@ -9,6 +9,7 @@ const EditIdea = () => {
 	const navigate = useNavigate ();
     const { boardId, id } = useParams();
     const [idea, setIdea] = useState(null);
+    const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [error, setError] = useState(null);
 
@@ -31,6 +32,7 @@ const EditIdea = () => {
         const data = {
             user: idea.user,
             board: idea.board,
+            title,
             content,
         };
 
@@ -49,6 +51,10 @@ const EditIdea = () => {
         <Form onSubmit={handleEdit}>
             <h2>Edit Idea</h2>
             {error && <div>{error}</div>}
+            <Form.Group controlId="title">
+                <Form.Label>Title</Form.Label>
+                <Form.Control type="text" value={title} onChange={e => setTitle(e.target.value)} />
+            </Form.Group>
             <Form.Group controlId="content">
                 <Form.Label>Content</Form.Label>
                 <Form.Control type="text" value={content} onChange={e => setContent(e.target.value)} />

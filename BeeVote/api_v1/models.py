@@ -33,6 +33,7 @@ class Board(models.Model):
 class Idea(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     board = models.ForeignKey(Board, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255, default='')
     content = models.TextField()
     order = models.PositiveIntegerField(default=get_next_order_value)
     voting_start = models.DateTimeField(default=timezone.now)

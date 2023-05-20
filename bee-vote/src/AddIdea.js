@@ -8,6 +8,7 @@ import { useParams, useNavigate  } from 'react-router-dom';
 const AddIdea = () => {
 	const navigate = useNavigate ();
 	const { boardId } = useParams();
+    const [title, setTile] = useState('');
     const [content, setContent] = useState('');
     const [error, setError] = useState(null);
 
@@ -19,6 +20,7 @@ const AddIdea = () => {
         const data = {
             user: JSON.parse(localStorage.getItem('user')).pk,
             board: boardId,
+            title,
             content,
 			order: 0,
         };
@@ -38,6 +40,10 @@ const AddIdea = () => {
         <Form onSubmit={handleAdd}>
             <h2>Add Idea</h2>
             {error && <div>{error}</div>}
+            <Form.Group controlId="title">
+                <Form.Label>Tile</Form.Label>
+                <Form.Control type="text" value={title} onChange={e => setTile(e.target.value)} />
+            </Form.Group>
             <Form.Group controlId="content">
                 <Form.Label>Content</Form.Label>
                 <Form.Control type="text" value={content} onChange={e => setContent(e.target.value)} />
