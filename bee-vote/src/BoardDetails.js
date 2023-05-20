@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import { setAuthHeader } from './auth';
 import { API_URL } from './config';
-import { ListGroup, Button } from 'react-bootstrap';
+import { ListGroup, Button, Table } from 'react-bootstrap';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const BoardDetails = () => {
@@ -110,41 +110,66 @@ const BoardDetails = () => {
       <Link to={`/boards/${boardId}/ideas/add`}>
         <Button variant="primary" className="mb-3">Add Idea</Button>
       </Link>
-	  {hasOrderChanged && 
+      {hasOrderChanged && 
         <Button variant="success" className="mb-3" onClick={saveOrder}>Save Order</Button>
       }
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided) => (
             <ListGroup {...provided.droppableProps} ref={provided.innerRef}>
-				{ideas.map((idea, index) => (
-					<Draggable key={idea.id} draggableId={(Math.random() + 1).toString(36).substring(7)} index={index} isDragDisabled={!idea.isOwner}>
-						{(provided) => (
-							<ListGroup.Item
-								ref={provided.innerRef}
-								{...provided.draggableProps}
-								{...provided.dragHandleProps}
-							>
-								{idea.content}
-								<div className="float-right">
-									<Link to={`/boards/${boardId}/ideas/${idea.id}/edit`}>
-										<Button variant="secondary" className="mr-2">Edit</Button>
-									</Link>
-									<Button variant="danger" onClick={() => deleteIdea(idea.id)}>Delete</Button>
-								</div>
-								<div>
-									<Button variant="success" onClick={() => voteOnIdea(idea.id, 1)}>Vote Up</Button>
-									<Button variant="danger" onClick={() => voteOnIdea(idea.id, 0)}>Vote Down</Button>
-									<span>Votes positive: {idea.votes.positive}</span>
-									<span>Votes negative: {idea.votes.negative}</span>
-									<span>Votes majority: {idea.votes.has_majority > 0 ? 'Yes' : 'No'}</span>
-								</div>
-							</ListGroup.Item>
-						)}
-					</Draggable>
-				))}
-				{provided.placeholder}
-			</ListGroup>
+                {ideas.map((idea, index) => (
+                    <Draggable key={idea.id} draggableId={(Math.random() + 1).toString(36).substring(7)} index={index} isDragDisabled={!idea.isOwner}>
+                        {(provided) => (
+                            <ListGroup.Item
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                            >
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <th>Idea Content</th>
+                                            <th>Edit/Delete</th>
+                                            <th>Vote Up/Down</th>
+                                            <th>Votes Positive</th>
+                                            <th>Votes Negative</th>
+                                            <th>Users</th>
+                                            <th>Votes Majority</th>
+                                            <th>Voting Start</th>
+                                            <th>Voting End</th>
+                                            <th>Voting Result</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{idea.content}</td>
+                                            <td>
+                                                <Link to={`/boards/${boardId}/ideas/${idea.id}/edit`}>
+                                                    <Button variant="secondary" className="mr-2">Edit</Button>
+                                                </Link>
+                                                <Button variant="danger" onClick={() => deleteIdea(idea.id)}>Delete</Button>
+                                            </td>
+                                            <td>
+                                                <Button variant="success" onClick={() => voteOnIdea(idea.id, 1)}>Vote Up</Button>
+                                                <Button variant="danger" onClick={() => voteOnIdea(idea.id, 0)}>Vote Down</Button>
+                                            </td>
+                                            <td>{idea.votes.positive}</td>
+                                            <td>{idea.votes.negative}</td>
+                                            <td>{idea.votes.users}</td>
+                                            <td>{idea.votes.has_majority > 0 ? 'Yes' : 'No'}</td>
+                                            <td>{idea.voting_start}</td>
+                                            <td>{idea.voting_end}</td>
+                                            <td>{idea.voting_result ? "Yes" : "No"}</td>
+                                        </tr>
+                                    </tbody>
+                                </Table>
+                            </ListGroup.Item>
+
+                        )}
+                    </Draggable>
+                ))}
+                {provided.placeholder}
+            </ListGroup>
           )}
         </Droppable>
       </DragDropContext>

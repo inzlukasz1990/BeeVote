@@ -25,13 +25,14 @@ class IdeaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Idea
-        fields = ['id', 'user', 'content', 'order', 'votes']
+        fields = ['id', 'user', 'content', 'order', 'votes', 'voting_start', 'voting_end', 'voting_result']
 
     def get_votes(self, obj):
         return {
             'positive': Vote.objects.filter(idea__id=obj.pk, value=True).count(),
             'negative': Vote.objects.filter(idea__id=obj.pk, value=False).count(),
-            'has_majority': Vote.objects.filter(idea__id=obj.pk, value=True).count() - Vote.objects.filter(idea__id=obj.pk, value=False).count(),
+            'users': obj.board.group.user_set.count(),
+            'has_majority': Vote.objects.filter(idea__id=obj.pk, value=True).count() - (obj.board.group.user_set.count() // 2),
         }
         
 class VoteSerializer(serializers.ModelSerializer):

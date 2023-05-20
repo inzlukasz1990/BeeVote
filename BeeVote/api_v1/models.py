@@ -5,6 +5,11 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.db.models import Max
+from django.utils import timezone
+from datetime import timedelta
+
+def one_week_from_now():
+    return timezone.now() + timedelta(weeks=1)
 
 class User(AbstractUser):
     pass
@@ -26,11 +31,19 @@ class Idea(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE)
     content = models.TextField()
     order = models.PositiveIntegerField()
+    voting_start = models.DateTimeField(default=timezone.now)
+    voting_end = models.DateTimeField(default=one_week_from_now)
+    voting_result = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['order']
 
     def save(self, *args, **kwargs):
+        if self.voting_end and timezone.now() > self.voting_end:
+            votes = self.votes.values_list('value', flat=True)
+            positive_votes = votes.count(True)
+            negative_votes = votes.count(False)
+            self.voting_result = positive_votes > negative_votes
         return super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
@@ -42,4 +55,4 @@ class Vote(models.Model):
     value = models.BooleanField()  # True for upvote, False for downvote
 
     class Meta:
-        unique_together = ('user', 'idea')  # User can only vote once on each idea
+        unique_together = ('user', 'idea')

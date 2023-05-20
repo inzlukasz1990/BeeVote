@@ -52,11 +52,12 @@ const BoardList = () => {
               <td>{board.id}</td>
               <td><Link to={`/boards/${board.id}`}>{board.title}</Link></td>
               <td>{board.user}</td>
-              <td>{board.group}</td>
               <td>
-                <Link to={`/board/edit/${board.id}`}>Edit</Link>
-                <Button variant="danger" onClick={() => deleteBoard(board.id)}>Delete</Button>
-              </td>
+				<Link to={`/board/edit/${board.id}`}>
+			      <Button variant="primary">Edit</Button>
+				</Link>
+				<Button variant="danger" onClick={() => deleteBoard(board.id)}>Delete</Button>
+			  </td>
             </tr>
           ))}
         </tbody>

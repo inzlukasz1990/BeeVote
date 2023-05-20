@@ -27,7 +27,7 @@ const EditBoard = () => {
             });
 		
 		// Pobierz grupy
-        axios.get(API_URL + 'groups/')
+        axios.get(API_URL + 'groups/user_groups/')
             .then(response => {
                 setGroups(response.data);
             })

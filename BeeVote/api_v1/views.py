@@ -113,8 +113,6 @@ class BoardIdeasViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         instance = self.get_object()
         validated_data = serializer.validated_data
-        
-        print(validated_data)
 
         if 'order' in validated_data:
             new_order = validated_data.get('order')
