@@ -15,7 +15,7 @@ const AddBoard = () => {
     useEffect(() => {
 		setAuthHeader(localStorage.getItem('access_token'));
 		
-        axios.get(API_URL + 'groups/')
+        axios.get(API_URL + 'groups/user_groups/')
             .then(response => {
                 setGroups(response.data);
             })

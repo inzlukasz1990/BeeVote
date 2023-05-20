@@ -57,6 +57,8 @@ const LoginPage = () => {
         } catch (error) {
             setError('Signup failed');
         }
+		
+		navigate('/boards');
     };
 
     return (

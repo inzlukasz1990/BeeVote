@@ -31,22 +31,10 @@ class Idea(models.Model):
         ordering = ['order']
 
     def save(self, *args, **kwargs):
-        if not self.pk:  # if it's a new object
-            try: 
-                max_order = self.board.ideas.aggregate(Max('order'))['order__max'] or 0
-                self.order = max_order + 1
-            except:
-                pass
-
         return super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        ideas_to_move_down = self.board.ideas.filter(order__gt=self.order)
         super().delete(*args, **kwargs)
-
-        for idea in ideas_to_move_down:
-            idea.order -= 1
-            idea.save()
 
 class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
