@@ -1,15 +1,19 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import Group
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
-from django.db.models import Max
 from django.utils import timezone
 from datetime import timedelta
 
+
 def one_week_from_now():
     return timezone.now() + timedelta(weeks=1)
+
+
+def get_next_order_value():
+    return Idea.objects.count() + 1
+
 
 class User(AbstractUser):
     pass
@@ -30,7 +34,7 @@ class Idea(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     board = models.ForeignKey(Board, on_delete=models.CASCADE)
     content = models.TextField()
-    order = models.PositiveIntegerField()
+    order = models.PositiveIntegerField(default=get_next_order_value)
     voting_start = models.DateTimeField(default=timezone.now)
     voting_end = models.DateTimeField(default=one_week_from_now)
     voting_result = models.BooleanField(default=False)

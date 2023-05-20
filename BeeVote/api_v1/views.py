@@ -7,6 +7,8 @@ from rest_framework import viewsets, permissions
 from django.contrib.auth import get_user_model
 from django.db.models import F
 from rest_framework import status
+from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 from .models import Board, Idea, Vote
 from .serializers import GroupSerializer, UserSerializer, BoardSerializer, IdeaSerializer, VoteSerializer
@@ -14,7 +16,9 @@ from .permissions import IsAdmin, IsOwner
 
 from django.db.models import Max
 
+
 User=get_user_model()
+
 
 def confirm_email(request, key):
     email_confirmation = EmailConfirmationHMAC.from_key(key)
@@ -23,6 +27,7 @@ def confirm_email(request, key):
     if email_confirmation:
         email_confirmation.confirm(request)
     return redirect('http://localhost:3000/')
+
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
@@ -46,6 +51,7 @@ class GroupViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -64,6 +70,7 @@ class UserViewSet(viewsets.ModelViewSet):
         group = Group.objects.get(pk=request.data['group'])
         user.groups.remove(group)
         return Response({'status': 'group left'})
+
 
 class BoardViewSet(viewsets.ModelViewSet):
     queryset = Board.objects.all()
@@ -92,7 +99,8 @@ class BoardViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-        
+
+
 class BoardIdeasViewSet(viewsets.ModelViewSet):
     queryset = Idea.objects.all()
     serializer_class = IdeaSerializer
@@ -131,7 +139,8 @@ class BoardIdeasViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         board_id = self.kwargs['board_pk']
         return Idea.objects.filter(board__id=board_id)    
-            
+
+
 class BoardIdeaVotesViewSet(viewsets.ModelViewSet):
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
@@ -139,7 +148,7 @@ class BoardIdeaVotesViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ['update', 'destroy']:
-            self.permission_classes = [IsOwner,]
+            self.permission_classes = [IsAdmin,]
         else:
             self.permission_classes = [permissions.IsAuthenticated,]
         return super(BoardIdeaVotesViewSet, self).get_permissions()
@@ -154,6 +163,10 @@ class BoardIdeaVotesViewSet(viewsets.ModelViewSet):
 
             if vote_exists:
                 return Response({'status': 'vote already made'}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Check if voting is over
+            if timezone.now() > idea.voting_end:
+                return Response({'status': 'voting has ended'}, status=status.HTTP_400_BAD_REQUEST)
 
             Vote.objects.create(
                 user=self.request.user, 

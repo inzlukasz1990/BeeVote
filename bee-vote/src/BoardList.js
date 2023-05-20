@@ -52,6 +52,7 @@ const BoardList = () => {
               <td>{board.id}</td>
               <td><Link to={`/boards/${board.id}`}>{board.title}</Link></td>
               <td>{board.user}</td>
+              <td>{board.group}</td>
               <td>
 				<Link to={`/board/edit/${board.id}`}>
 			      <Button variant="primary">Edit</Button>

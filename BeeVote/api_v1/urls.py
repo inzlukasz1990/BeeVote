@@ -1,9 +1,9 @@
 from django.urls import path, include
-from allauth.account.views import confirm_email
 from rest_framework_nested import routers
 
 from .views import confirm_email
 from .views import GroupViewSet, UserViewSet, BoardViewSet, BoardIdeasViewSet, BoardIdeaVotesViewSet
+
 
 router = routers.SimpleRouter()
 router.register(r'groups', GroupViewSet)

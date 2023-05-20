@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import LoginPage from './LoginPage';
@@ -11,8 +11,6 @@ import AddIdea from './AddIdea';
 import EditIdea from './EditIdea';
 
 const App = () => {
-  const [user, setUser] = useState(null);
-
   return (
     <Router>
       <Navbar bg="dark" variant="dark">

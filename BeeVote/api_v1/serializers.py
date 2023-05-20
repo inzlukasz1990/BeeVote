@@ -3,22 +3,27 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import Board, Idea, Vote
 
+
 User=get_user_model()
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username']
 
+
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ['id', 'name']
-        
+
+
 class BoardSerializer(serializers.ModelSerializer):
    class Meta:
         model = Board
         fields = ['id', 'user', 'group', 'title']
+
 
 class IdeaSerializer(serializers.ModelSerializer):
     votes = serializers.SerializerMethodField()
@@ -34,7 +39,8 @@ class IdeaSerializer(serializers.ModelSerializer):
             'users': obj.board.group.user_set.count(),
             'has_majority': Vote.objects.filter(idea__id=obj.pk, value=True).count() - (obj.board.group.user_set.count() // 2),
         }
-        
+
+
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
