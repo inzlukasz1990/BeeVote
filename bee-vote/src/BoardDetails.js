@@ -67,9 +67,7 @@ const BoardDetails = () => {
         setError('Error fetching ideas');
       });
   }, [boardId]);
-  
-  console.log(ideas);
-  
+
   const deleteIdea = (ideaId) => {
     axios.delete(API_URL + `boards/${boardId}/ideas/${ideaId}/`)
       .then(response => {
